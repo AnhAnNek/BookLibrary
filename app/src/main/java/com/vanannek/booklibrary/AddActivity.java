@@ -22,10 +22,22 @@ public class AddActivity extends AppCompatActivity {
         add_button = findViewById(R.id.add_button);
 
         add_button.setOnClickListener(v -> {
-            MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-            myDB.addBook(title_input.getText().toString().trim(),
-                    author_input.getText().toString().trim(),
-                    Integer.valueOf(pages_input.getText().toString().trim()));
+            try {
+                MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
+                boolean flag = myDB.addBook(title_input.getText().toString().trim(),
+                        author_input.getText().toString().trim(),
+                        Integer.valueOf(pages_input.getText().toString().trim()));
+                if (flag)
+                    clearText();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
+    }
+
+    public void clearText() {
+        title_input.getText().clear();
+        author_input.getText().clear();
+        pages_input.getText().clear();
     }
 }
