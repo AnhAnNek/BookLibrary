@@ -1,5 +1,6 @@
 package com.vanannek.booklibrary;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,14 +44,24 @@ public class MainActivity extends AppCompatActivity {
         book_author = new ArrayList<>();
         book_pages = new ArrayList<>();
 
+        Toast.makeText(this, "Anh An Nek", Toast.LENGTH_SHORT).show();
+
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(MainActivity.this, book_id, book_title, book_author,
-                book_pages);
+        customAdapter = new CustomAdapter(MainActivity.this, this,
+                book_id, book_title, book_author, book_pages);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
-    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == CustomAdapter.REQUEST_CODE) {
+            recreate();
+        }
+    }
+
     public void storeDataInArrays() {
         Cursor cursor = myDB.readAllData();
         if (cursor.getCount() == 0) {
